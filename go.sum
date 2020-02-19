@@ -1,0 +1,7 @@
+github.com/agnivade/shimmer v0.0.0-20191107091715-d08fb873f760 h1:tWBP22v6vUu8/ijDEAfMLtz2S0/igEV6bcGz9BkVSQM=
+github.com/agnivade/shimmer v0.0.0-20191107091715-d08fb873f760/go.mod h1:FMC1VJjHaZOxbu7ao/Z/gtrAiPwQcJdPQUYFP7c0l1Y=
+github.com/anthonynsimon/bild v0.0.0-20190311092716-e21126554192 h1:IRxECMMwkcdFpiBbVxguPzrAqyyO3n1LnWhtq1R43Gs=
+github.com/anthonynsimon/bild v0.0.0-20190311092716-e21126554192/go.mod h1:rY8HbNSqiIVRGquP67cbI8etkQGyCZzQ5Fkp0MdtXCQ=
+golang.org/x/image v0.0.0-20190321063152-3fc05d484e9f h1:FO4MZ3N56GnxbqxGKqh+YTzUWQ2sDwtFQEZgLOxh9Jc=
+golang.org/x/image v0.0.0-20190321063152-3fc05d484e9f/go.mod h1:kZ7UVZpmo3dzQBMxlp+ypCbDeSB+sBbTgSJuh5dn5js=
+golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=

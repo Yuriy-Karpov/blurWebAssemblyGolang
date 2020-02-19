@@ -1,0 +1,190 @@
+ package main
+
+ import (
+        //  "flag"
+         "fmt"
+         "image"
+         _ "image/color"
+         "image/draw"
+         "image/jpeg"
+         "os"
+		 "log"
+		 "image/color"
+		//  _ "image/jpeg"
+ )
+ type scanner struct {
+	image   image.Image
+	w, h    int
+	palette []color.NRGBA
+}
+
+ func newScanner(img image.Image) *scanner {
+	s := &scanner{
+		image: img,
+		w:     img.Bounds().Dx(),
+		h:     img.Bounds().Dy(),
+	}
+	if img, ok := img.(*image.Paletted); ok {
+		s.palette = make([]color.NRGBA, len(img.Palette))
+		for i := 0; i < len(img.Palette); i++ {
+			s.palette[i] = color.NRGBAModel.Convert(img.Palette[i]).(color.NRGBA)
+		}
+	}
+	return s
+}
+
+// type RGBA struct {
+//     R, G, B, A uint8
+// }
+
+ func main() {
+		 
+	filename := "images/pixel-6.jpg"
+	reader, err := os.Open(filename)
+	if err != nil {
+	    log.Fatal(err)
+	}
+	defer reader.Close()
+
+	imageDecode, name, err := image.Decode(reader)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Print("name: ", name, "\n");
+
+	// bounds := imageDecode.Bounds()
+
+	r, g, b, a  := imageDecode.At(0, 0).RGBA()
+	fmt.Print("pixel:", r, g, b, a , "\n")
+	c := imageDecode.At(0, 0)
+	fmt.Print("c:", c, "\n")
+
+	var tmpImg color.Color;
+
+	fmt.Print("tmpImg:", tmpImg)
+
+	// var histogram [16][4]int
+	// for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+	// 	for x := bounds.Min.X; x < bounds.Max.X; x++ {
+	// 		r, g, b, a := imageDecode.At(x, y).RGBA()
+	// 		fmt.Print("r: ", r, "\n")
+	// 		fmt.Print("g: ", g, "\n")
+	// 		fmt.Print("b: ", b, "\n")
+	// 		fmt.Print("a: ", a, "\n")
+	// 		// A color's RGBA method returns values in the range [0, 65535].
+	// 		// Shifting by 12 reduces this to the range [0, 15].
+	// 		histogram[r>>12][0]++
+	// 		histogram[g>>12][1]++
+	// 		histogram[b>>12][2]++
+	// 		histogram[a>>12][3]++
+	// 	}
+	// }
+
+	// // Print the results.
+	// fmt.Printf("%-14s %6s %6s %6s %6s\n", "bin", "red", "green", "blue", "alpha")
+	// for i, x := range histogram {
+	// 	fmt.Printf("0x%04x-0x%04x: %6d %6d %6d %6d\n", i<<12, (i+1)<<12-1, x[0], x[1], x[2], x[3])
+	// }
+
+
+	/** создаём пустую картинку **/
+	file, err := os.Create("blur.jpg")
+	// отлаживаем закрытие 
+	defer file.Close()
+	// проверяем на ошибку
+    if err != nil {
+        fmt.Errorf("%s", err)
+    }
+
+	// создаём 
+	img := image.NewRGBA(image.Rect(0, 0, 500, 500))
+	
+	// для заливки одним цветом
+	var teal color.Color = color.RGBA{0, 200, 255, 255}
+	var red  color.Color = color.RGBA{200, 30, 30, 255}
+	
+	draw.Draw(img, img.Bounds(), &image.Uniform{teal}, image.ZP, draw.Src)
+    // или draw.Draw(img, img.Bounds(), image.Transparent, image.ZP, draw.Src)
+	for x := 20; x < 380; x++ {
+		y := x/3 + 15
+		img.Set(x, y, red)
+	}
+	
+    jpeg.Encode(file, img, &jpeg.Options{})
+
+	// config, format, err := image.DecodeConfig(reader)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println("Width:", config.Width, "Height:", config.Height, "Format:", format)
+
+	// src, _, err := image.Decode(reader)
+
+	// srcImage, _, _ := image.Decode(reader)
+	// fmt.Println("run: ", srcImage)
+	// src := newScanner(srcImage)
+	// // dstImage := image.NewRGBA(srcImage.Bounds())
+	// fmt.Println("src: ", src)
+	
+	// jpeg.Encode(newImage, srcImage, &jpeg.Options{jpeg.DefaultQuality})
+	// input, err1 := jpeg.DecodeConfig(reader)
+
+
+	// input, str, err1 := jpeg.DecodeConfig(reader)
+	// if err1 != nil {
+	// 	fmt.Println("input err: ", err1)
+	// }
+	// fmt.Println("input: ", input)
+	// fmt.Println("str: ", str)
+
+
+	
+	// if img == nil {
+	// 	fmt.Println("jpeg  nil")
+	// }
+	// if err != nil {
+	// 	log.Fatal("Fatal: ", err)
+	// }
+
+	// fmt.Println("img:", img)
+	// bounds := m.Bounds()
+	
+        //  flag.Parse()
+        //  rand.Seed(time.Now().UTC().UnixNano())
+
+        //  out, err := os.Create("./output.jpg")
+        //  if err != nil {
+        //          fmt.Println(err)
+        //          os.Exit(1)
+        //  }
+
+        //  // generate some QR code look a like image
+
+        //  imgRect := image.Rect(0, 0, 200, 200)
+        //  img := image.NewGray(imgRect)
+        //  draw.Draw(img, img.Bounds(), &image.Uniform{color.White}, image.ZP, draw.Src)
+        //  for y := 0; y < 200; y += 10 {
+        //          for x := 0; x < 200; x += 10 {
+        //                  fill := &image.Uniform{color.Black}
+        //                  if rand.Intn(10)%2 == 0 {
+        //                          fill = &image.Uniform{color.White}
+        //                  }
+        //                  draw.Draw(img, image.Rect(x, y, x+10, y+10), fill, image.ZP, draw.Src)
+        //          }
+        //  }
+
+        //  var opt jpeg.Options
+
+        //  opt.Quality = 80
+        //  // ok, write out the data into the new JPEG file
+
+        //  err = jpeg.Encode(out, img, &opt) // put quality to 80%
+        //  if err != nil {
+        //          fmt.Println(err)
+        //          os.Exit(1)
+        //  }
+
+		//  fmt.Println("Generated image to output.jpg \n")
+		
+
+ }
